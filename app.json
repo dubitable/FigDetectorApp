@@ -4,9 +4,9 @@
     "slug": "FigDetector",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/fig.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/fig.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/fig.png",
         "backgroundColor": "#FFFFFF"
       }
     },
