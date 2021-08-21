@@ -1,56 +1,51 @@
 import React, {useState} from "react";
 import { StyleSheet, Text, View, Button, Image} from 'react-native';
+import {BarChart} from 'react-native-chart-kit'
+import * as FileSystem from 'expo-file-system';
 import LoadingScreen from "./LoadingScreen";
 
-const createFormData = (photo) => {
-    const data = new FormData();
-
-    data.append('file', {
-      name: photo.fileName,
-      type: photo.type,
-      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-    });
-    return data;
-};
-
-const get = () => {
-    return ({
-        method: "GET",
-    })
-}
-
-const post = (photo) => {
-    return ({
-        method: "POST",
-        body: createFormData(photo)
-    })
-}
-const predict = (photo) => {
-    return fetch("https://detectors.herokuapp.com/figdetector", post(photo))
-}
-
-
+const api = "https://detectors.herokuapp.com/figdetectorjs";
+const local = "http://127.0.0.1:5000/figdetectorjs";
 
 const PredictionScreen = (props) => {
     const [response, setResponse] = useState(null);
 
-    const predictphoto = () => {
-        return predict(props.photo)
+    const predict = async () => {
+        const base64 = await FileSystem.readAsStringAsync(props.photo.uri, {"encoding": "base64"})
+        const request = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+    
+            body: JSON.stringify({
+                "base64": base64 
+            })
+        }
+        return fetch(api, request);
     }
 
     if (response === null){
         return (
-            <LoadingScreen startAsync = {predictphoto} onFinish = {setResponse}/>
+            <LoadingScreen startAsync = {predict} onFinish = {setResponse}/>
         )
     }
     const src = {uri: props.photo.uri};
-    console.log(src);
+    
+    console.log(response);
+
+    let message = "NOT FIG";
+
+    if (response.class_name == "fig"){
+        message = "FIG";
+    }
+
     return (
         <View style = {styles.screen}>
             <View style = {styles.imageContainer}>
                 <Image style = {styles.image} source = {src}/> 
             </View>
-            <Text> {JSON.stringify(response)} </Text>
+            <Text> {message} </Text>
             <Button title="Home" onPress={props.reset}/>
         </View>
     )
