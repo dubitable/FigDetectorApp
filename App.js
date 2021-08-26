@@ -14,27 +14,10 @@ export default function App() {
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
-  const [images, setImages] = useState(null);
-
-  const cacheAssetsAsync = async() => {
-    const images = {
-      fig: await Asset.loadAsync(require("./assets/images/fig.png")),
-      figButton: await Asset.loadAsync(require("./assets/images/figbutton.png"))
-    }
-    setImages(images);
-  }
-
-  if (images === null){
-    cacheAssetsAsync().then(() => {
-      setLoaded(true)
-    });
-    return <AppLoading/>
-  }
-
-  let screen = <HomeScreen type={type} setPhoto={setPhoto} setCamType={setType} images={images}/>;
+  let screen = <HomeScreen type={type} setPhoto={setPhoto} setCamType={setType}/>;
 
   if (photo != null){
-    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}} images={images}/>
+    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}}/>
   }
   return (
     <View style={styles.container}>

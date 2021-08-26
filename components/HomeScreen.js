@@ -53,15 +53,7 @@ const HomeScreen = props => {
         if (status !== "granted"){
             Alert.alert("Permissions Denied", 
                         "Please allow access to your Photo Library if you want to use this feature.",
-                        [
-                            {
-                                text: "OK"
-                            },
-                            {
-                                text: "Settings",
-                                onPress: () => Linking.openSettings()
-                            }
-                        ])
+                        [config.okButton, config.settingsButton])
             return;
         }
         const options = {
@@ -98,7 +90,7 @@ const HomeScreen = props => {
                         <MaterialIcons name="camera-alt" size={100} color="white"/>
                     </TouchableOpacity>
                 </View>
-                <Image style = {noCamStyles.fig} source = {props.images.fig}/>
+                <Image style = {noCamStyles.fig} source = {require("../assets/images/fig.png")}/>
             </View>
         );
     }
@@ -114,7 +106,9 @@ const HomeScreen = props => {
                             <ImgPicker onPress = {imagePickerHandler} style={styles.libIcon} size={50}/>
                             <SwitchCam onPress = {switchType} style={styles.switchIcon} size={50}/>
                         </View>
-                        <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto} source={props.images.figButton}/>
+                        
+                        <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
+                        
                     </View>
                 </Camera>
             </TouchableWithoutFeedback>
@@ -134,11 +128,11 @@ const styles = StyleSheet.create({
     button: {
         width: 100,
         height: 100,
-        marginBottom: 30,
-        alignSelf: "center"
+        marginBottom: 30
     },
     icons:{
         flexDirection: "row",
+        width: "100%",
         justifyContent: "space-between",
         marginTop: 50
     },
@@ -150,7 +144,8 @@ const styles = StyleSheet.create({
     cameraView: {
         flex: 1,
         backgroundColor: 'transparent',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: "center"
     },
     text: {
         fontSize: 25

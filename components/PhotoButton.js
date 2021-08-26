@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 const PhotoButton = (props) => {
     const cameraRef = props.camera;
@@ -8,7 +8,7 @@ const PhotoButton = (props) => {
             let photo = await cameraRef.takePictureAsync();
             props.setPhoto(photo);
         }}>
-            <Image style = {props.style} source={props.source} resizeMode="contain"/>
+            <Image style = {props.style} source={require("../assets/images/figbutton.png")} resizeMode="contain"/>
         </TouchableOpacity>
     )
 };

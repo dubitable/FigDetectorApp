@@ -1,4 +1,5 @@
 const config = {
+    backgroundColor: "#9FA8DA",
     chartConfig: {
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#fb8c00",
@@ -8,7 +9,13 @@ const config = {
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     },
-    backgroundColor: "#9FA8DA"
+    okButton: {
+        text: "OK",
+    },
+    settingsButton: {
+        text: "Settings",
+        onPress: () => Linking.openSettings()
+    }
 }
 
 export default config;
