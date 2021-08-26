@@ -2,6 +2,8 @@ import { Camera } from 'expo-camera';
 import React, {useState} from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import ImageEditor from "@react-native-community/image-editor";
+
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
@@ -13,6 +15,15 @@ export default function App() {
 
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const photoHandler = async (photo) => {
+    const cropData = {
+      offset: {x: 0, y: 500},
+      size: {width: photo.width, height: 3000},
+    }
+    await ImageEditor.cropImage(photo.uri, cropData);
+    setPhoto(photo);
+  }
 
   const cacheAssetsAsync = async () => {
     Font.loadAsync({
@@ -27,7 +38,7 @@ export default function App() {
     cacheAssetsAsync();
     return <AppLoading/>
   }
-  let screen = <HomeScreen type={type} setPhoto={setPhoto} setCamType={setType}/>;
+  let screen = <HomeScreen type={type} setPhoto={photoHandler} setCamType={setType}/>;
 
   if (photo != null){
     screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}}/>

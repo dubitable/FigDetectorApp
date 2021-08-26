@@ -98,8 +98,10 @@ const HomeScreen = props => {
                             <ImgPicker onPress = {imagePickerHandler} style={styles.libIcon} size={50}/>
                             <SwitchCam onPress = {switchType} style={styles.switchIcon} size={50}/>
                         </View>
+                        <View style={styles.buttonContainer}>
+                            <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
+                        </View>
                         
-                        <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
                         
                     </View>
                 </Camera>
@@ -117,6 +119,13 @@ const styles = StyleSheet.create({
     camera: {
         flex: 1
     },
+    buttonContainer: {
+        width: "100%",
+        alignItems: "center",
+        borderColor: "white",
+        borderTopWidth: 5,
+        paddingTop: 20
+    },
     button: {
         width: 100,
         height: 100,
@@ -126,7 +135,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "100%",
         justifyContent: "space-between",
-        marginTop: 50
+        marginTop: 50,
+        borderColor: "white",
+        paddingBottom: 20,
+        borderBottomWidth: 5
     },
 
     switchIcon: {

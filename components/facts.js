@@ -10,7 +10,7 @@ const facts = [
     "A study held in 1971 found that eating too many figs can increase your chances of developing arthritis by the age of 60 by 43%.",
     "Morocco has the highest consumption per capita of figs in the world. Coincedentally, some consider the country among the worst in the world.",
     "The ingestion of figs on airplanes has been known to increase motion sickness and worsen the effects of jet lag.",
-    "In Egypt, there were 13 recorded fog related deaths in 2019.",
+    "In Egypt, there were 13 recorded fig related deaths in 2019.",
     "Figs are known as an omen of disease, decay and destruction in many Polynesian cultures."
 ]
 

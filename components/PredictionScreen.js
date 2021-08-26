@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions} from 'react-native';
 
 import {BarChart} from "react-native-chart-kit";
-
 import * as FileSystem from 'expo-file-system';
 
 import LoadingScreen from "./LoadingScreen";
@@ -79,15 +78,17 @@ const PredictionScreen = (props) => {
         />
     )
 
+    console.log(props.photo);
+
     return (
         <View style={styles.screen}>
             <ScrollView contentContainerStyle = {styles.scroll}>
-            <View style = {styles.imageContainer}>
-                <Image style = {styles.image} source = {src}/> 
-            </View>
-            <Text> {message} </Text>
-            {figChart}
-            <Button title="Home" onPress={props.reset}/>
+                <View style = {styles.imageContainer}>
+                    <Image style = {styles.image} source = {src}/> 
+                </View>
+                <Text> {message} </Text>
+                {figChart}
+                <Button title="Home" onPress={props.reset}/>
             </ScrollView>
             
         </View>
@@ -102,11 +103,13 @@ const styles = StyleSheet.create({
     },
     scroll: {
         flexDirection: "column",
+        width: "100%",
+        height: "100%",
         alignItems: "center",
     },
     imageContainer: {
-        height: 320,
-        width: 180
+        height: 200,
+        width: "100%"
     },
     image: {
         height: "100%",

@@ -42,6 +42,7 @@ const LoadingScreen = props => {
             
         })
         .catch((error) => {
+            console.log(error);
             Alert.alert("Request Failed", 
                         "This is most likely a network error. Either you do not have access to Internet, or have not allowed the app to use it.",
                         [config.okButton, config.settingsButton])
