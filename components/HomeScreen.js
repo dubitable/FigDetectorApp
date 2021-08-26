@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Alert, Linking} from 'react-native';
+
 import { Camera } from 'expo-camera';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
+import * as ImagePicker from 'expo-image-picker';
 
 import PhotoButton from "./PhotoButton";
 
@@ -13,6 +15,13 @@ const HomeScreen = props => {
     const [cameraRef, setCameraRef] = useState(null)
     const [type, setType] = useState(props.type);
     const [lastTap, setLastTap] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestPermissionsAsync();
+            setHasPermission(status === 'granted');
+        })();
+    }, []);
 
     const switchType = () => {
         if (type === back){
@@ -36,12 +45,29 @@ const HomeScreen = props => {
         }
     }
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
-    }, []);
+    const imagePickerHandler = async() => {
+        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted"){
+            Alert.alert("Permissions Denied", 
+                        "Please allow access to your Photo Library if you want to use this feature.",
+                        [
+                            {
+                                text: "OK"
+                            },
+                            {
+                                text: "Settings",
+                                onPress: () => Linking.openSettings()
+                            }
+                        ])
+            return;
+        }
+        const options = {
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsMultipleSelection: false
+        }
+        let result = await ImagePicker.launchImageLibraryAsync(options);
+        props.setPhoto(result)
+    }
 
     if (hasPermission === null) {
         return <View />;
@@ -56,9 +82,15 @@ const HomeScreen = props => {
                     setCameraRef(ref);
                 }}>
                     <View style={styles.cameraView}>
-                        <TouchableOpacity onPress={switchType}>
-                            <MaterialCommunityIcons style = {styles.switchIcon} name="camera-switch-outline" size={50} color="white" />
-                        </TouchableOpacity>
+                        <View style={styles.icons}>
+                            <TouchableOpacity onPress={imagePickerHandler}>
+                                <MaterialIcons style = {styles.libIcon} name="photo-library" size={50} color="white" />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={switchType}>
+                                <MaterialCommunityIcons style = {styles.switchIcon} name="camera-switch-outline" size={50} color="white" />
+                            </TouchableOpacity>
+                        </View>
                         <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
                     </View>
                 </Camera>
@@ -82,11 +114,18 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         alignSelf: "center"
     },
+    icons:{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 50
+    },
+
+    libIcon: {
+        marginLeft: 20
+    },
 
     switchIcon: {
-        alignSelf: "flex-end",
-        marginRight: 20,
-        marginTop: 50
+        marginRight: 20
     },
     
     cameraView: {
