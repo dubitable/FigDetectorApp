@@ -3,7 +3,15 @@ const facts = [
     "New Jersey made figs their national fruit in 1965. Fitting.",
     "Contrary to popular belief, figs are actually vegetables.",
     "All figs possess the same amount of internal seeds. No one has bothered to count them though.",
-    "Figs are directly responsible for the assassination of Archduke Franz Ferdinand."
+    "Figs are directly responsible for the assassination of Archduke Franz Ferdinand.",
+    "Romania banned the importation of figs into the country from 1993-1998 due to a suspected illness associated with their consumption.",
+    "This app fig-ures out whether your photo is a fig or not.",
+    "According to a 2013 survey held by students of Charles University of Prague, 34% of Czechs present a strong distaste for figs.",
+    "A study held in 1971 found that eating too many figs can increase your chances of developing arthritis by the age of 60 by 43%.",
+    "Morocco has the highest consumption per capita of figs in the world. Coincedentally, some consider the country among the worst in the world.",
+    "The ingestion of figs on airplanes has been known to increase motion sickness and worsen the effects of jet lag.",
+    "In Egypt, there were 13 recorded fog related deaths in 2019.",
+    "Figs are known as an omen of disease, decay and destruction in many Polynesian cultures."
 ]
 
 const toObject = (fact, index) => {

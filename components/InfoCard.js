@@ -5,11 +5,15 @@ import config from "./config";
 
 const InfoCard = props => {
     let factText;
-
-    if (props.fact.type === "text"){
-        factText = (
-            <Text style={styles.bodyText}> {props.fact.content} </Text>
-        )
+    try{
+        if (props.fact.type === "text"){
+            factText = (
+                <Text style={styles.bodyText}> {props.fact.content} </Text>
+            )
+        }
+    }
+    catch{
+        console.log(props.fact);
     }
     
     return (
@@ -24,27 +28,24 @@ const InfoCard = props => {
 }
 
 const styles = StyleSheet.create({
-    buttton: {
-        width: "100%",
-        height: "100%"
-    },
     container: {
         alignItems: "center",
     },
     card: {
         backgroundColor: "#1768AC",
         width: "90%",
-        height: "20%",
         borderRadius: 25
     },
     headerText: {
-        marginVertical: 10,
+        marginTop: 10,
         color: "white",
         fontFamily: "open-sans-bold",
         fontSize: 20
     },
     bodyText: {
         marginHorizontal: 20,
+        marginTop: 20,
+        marginBottom: 30,
         color: "white",
         fontFamily: "open-sans",
         fontSize: 20
