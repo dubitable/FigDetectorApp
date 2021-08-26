@@ -1,8 +1,12 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View, Button, Image} from 'react-native';
-import {BarChart} from 'react-native-chart-kit'
+import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions} from 'react-native';
+
+import {BarChart} from "react-native-chart-kit";
+
 import * as FileSystem from 'expo-file-system';
+
 import LoadingScreen from "./LoadingScreen";
+import config from "./config";
 
 const api = "https://detectors.herokuapp.com/figdetectorjs";
 const local = "http://127.0.0.1:5000/figdetectorjs";
@@ -27,12 +31,10 @@ const PredictionScreen = (props) => {
 
     if (response === null){
         return (
-            <LoadingScreen startAsync = {predict} onFinish = {setResponse}/>
+            <LoadingScreen startAsync = {predict} onFinish = {setResponse} onError={props.reset}/>
         )
     }
     const src = {uri: props.photo.uri};
-    
-    console.log(response);
 
     let message = "NOT FIG";
 
@@ -40,14 +42,52 @@ const PredictionScreen = (props) => {
         message = "FIG";
     }
 
+    const labels = Object.keys(response.confidences);
+    const confidences = Object.values(response.confidences).map(value => Number(value));
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                data: confidences
+            }
+        ]
+    }
+
+    const figLabels = ["Fig", "Not Fig"];
+    const isFig = Number(response.confidences["fig"]) + Number(response.confidences["desert fig"]);
+    const figConfidences = [isFig, 1 - isFig];
+
+    const figData = {
+        labels: figLabels,
+        datasets: [
+            {
+                data: figConfidences
+            }
+        ]
+    }
+
+    let figChart = (
+        <BarChart
+            data={figData}
+            width={Dimensions.get("window").width} // from react-native
+            height={220}
+            chartConfig={config.chartConfig}
+            style={styles.chart}
+            withHorizontalLabels={true}
+            fromZero={true}
+        />
+    )
+
     return (
-        <View style = {styles.screen}>
+        <ScrollView contentContainerStyle={styles.screen}>
             <View style = {styles.imageContainer}>
                 <Image style = {styles.image} source = {src}/> 
             </View>
             <Text> {message} </Text>
+            {figChart}
             <Button title="Home" onPress={props.reset}/>
-        </View>
+        </ScrollView>
     )
 };
 
@@ -63,6 +103,10 @@ const styles = StyleSheet.create({
     image: {
         height: "100%",
         width: "100%"
+    },
+    chart: {
+        marginVertical: 8,
+        borderRadius: 16
     }
 })
 
