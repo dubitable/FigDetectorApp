@@ -1,16 +1,21 @@
-import React, {useEffect} from "react";
-import { StyleSheet, Text, View, Linking, Alert } from 'react-native';
+import React, {useEffect, useState} from "react";
+import { StyleSheet, Text, View, Linking, Alert, Image } from 'react-native';
 
+import factObjects from "./facts";
 import config from "./config";
+import InfoCard from "./InfoCard";
+
+const sample = (array) => {
+    const random = Math.floor(Math.random() * array.length);
+    return array[random];
+}
 
 const LoadingScreen = props => {
     useEffect(() => {
-        if (props.prod){
-            return;
-        }
+        return;
         props.startAsync()
         .then((response) => {
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
             if (response.status == 200){
                 response.json()
                 .then(prediction => {
@@ -32,17 +37,24 @@ const LoadingScreen = props => {
             props.onError();
         });
     }, [])
-    
+
+    const [fact, setFact] = useState(sample(factObjects));
     
     return (
-        <View> 
-            <Text> LOADING.... </Text>
+        <View style = {styles.screen}> 
+            <InfoCard style = {styles.card} fact = {fact} onPress= {() => setFact(sample(factObjects))}/>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-
+    screen: {
+        width: "100%",
+        height: "100%",
+        backgroundColor: config.backgroundColor,
+        justifyContent: "center",
+        alignItems: "center"
+    },
 });
 
 export default LoadingScreen;

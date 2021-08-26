@@ -70,7 +70,7 @@ const PredictionScreen = (props) => {
     let figChart = (
         <BarChart
             data={figData}
-            width={Dimensions.get("window").width} // from react-native
+            width={Dimensions.get("window").width}
             height={220}
             chartConfig={config.chartConfig}
             style={styles.chart}
