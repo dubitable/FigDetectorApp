@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Alert, Linking} from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity, TouchableWithoutFeedback, Alert, Linking} from 'react-native';
 
 import { Camera } from 'expo-camera';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker';
 
+import ImgPicker from "./ImagePicker";
+import SwitchCam from "./SwitchCam";
 import PhotoButton from "./PhotoButton";
+import config from "./config";
 
 const front = Camera.Constants.Type.front;
 const back = Camera.Constants.Type.back;
@@ -69,12 +72,37 @@ const HomeScreen = props => {
         props.setPhoto(result)
     }
 
+    const requireCamera = () => {
+        Alert.alert("Permissions Denied", 
+                        "Please allow access to your Camera if you want to use this feature.",
+                        [
+                            {
+                                text: "OK"
+                            },
+                            {
+                                text: "Settings",
+                                onPress: () => Linking.openSettings()
+                            }
+                        ])
+    }
+
     if (hasPermission === null) {
         return <View />;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return (
+            <View style = {noCamStyles.container}>
+                <View style = {noCamStyles.icons}>
+                    <ImgPicker onPress= {imagePickerHandler} size={100}/> 
+                    <TouchableOpacity onPress= {requireCamera}>
+                        <MaterialIcons name="camera-alt" size={100} color="white"/>
+                    </TouchableOpacity>
+                </View>
+                <Image style = {noCamStyles.fig} source = {props.images.fig}/>
+            </View>
+        );
     }
+    
     return (
         <View style={styles.cameraContainer}>
             <TouchableWithoutFeedback activeOpacity={0} onPress={doubleTapHandler}>
@@ -83,15 +111,10 @@ const HomeScreen = props => {
                 }}>
                     <View style={styles.cameraView}>
                         <View style={styles.icons}>
-                            <TouchableOpacity onPress={imagePickerHandler}>
-                                <MaterialIcons style = {styles.libIcon} name="photo-library" size={50} color="white" />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={switchType}>
-                                <MaterialCommunityIcons style = {styles.switchIcon} name="camera-switch-outline" size={50} color="white" />
-                            </TouchableOpacity>
+                            <ImgPicker onPress = {imagePickerHandler} style={styles.libIcon} size={50}/>
+                            <SwitchCam onPress = {switchType} style={styles.switchIcon} size={50}/>
                         </View>
-                        <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
+                        <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto} source={props.images.figButton}/>
                     </View>
                 </Camera>
             </TouchableWithoutFeedback>
@@ -120,10 +143,6 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
 
-    libIcon: {
-        marginLeft: 20
-    },
-
     switchIcon: {
         marginRight: 20
     },
@@ -135,7 +154,34 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 25
+    },
+    switchIcon: {
+        marginRight: 20
+    },
+    libIcon: {
+        marginLeft: 20
     }
 })
+
+const noCamStyles = StyleSheet.create({
+    container: {
+        width: "100%",
+        height: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: config.backgroundColor,
+    },
+    icons: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 50
+    },
+    fig: {
+        height: 150,
+        width: 150,
+        marginTop: 50
+    },
+});
 
 export default HomeScreen;

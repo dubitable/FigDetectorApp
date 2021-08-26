@@ -8,7 +8,7 @@ const PhotoButton = (props) => {
             let photo = await cameraRef.takePictureAsync();
             props.setPhoto(photo);
         }}>
-            <Image style = {props.style} source={require("../assets/images/figbutton.png")} resizeMode="contain"/>
+            <Image style = {props.style} source={props.source} resizeMode="contain"/>
         </TouchableOpacity>
     )
 };
