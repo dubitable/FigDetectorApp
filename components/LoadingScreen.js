@@ -5,6 +5,9 @@ import config from "./config";
 
 const LoadingScreen = props => {
     useEffect(() => {
+        if (props.prod){
+            return;
+        }
         props.startAsync()
         .then((response) => {
             console.log(JSON.stringify(response));

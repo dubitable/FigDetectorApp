@@ -80,21 +80,29 @@ const PredictionScreen = (props) => {
     )
 
     return (
-        <ScrollView contentContainerStyle={styles.screen}>
+        <View style={styles.screen}>
+            <ScrollView contentContainerStyle = {styles.scroll}>
             <View style = {styles.imageContainer}>
                 <Image style = {styles.image} source = {src}/> 
             </View>
             <Text> {message} </Text>
             {figChart}
             <Button title="Home" onPress={props.reset}/>
-        </ScrollView>
+            </ScrollView>
+            
+        </View>
     )
 };
 
 const styles = StyleSheet.create({
     screen: {
+        width: "100%",
+        height: "100%",
+        backgroundColor: config.backgroundColor
+    },
+    scroll: {
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
     },
     imageContainer: {
         height: 320,

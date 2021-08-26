@@ -67,15 +67,7 @@ const HomeScreen = props => {
     const requireCamera = () => {
         Alert.alert("Permissions Denied", 
                         "Please allow access to your Camera if you want to use this feature.",
-                        [
-                            {
-                                text: "OK"
-                            },
-                            {
-                                text: "Settings",
-                                onPress: () => Linking.openSettings()
-                            }
-                        ])
+                        [config.okButton,config.settingsButton])
     }
 
     if (hasPermission === null) {
