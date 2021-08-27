@@ -1,14 +1,13 @@
-import { Camera } from "expo-camera";
 import React, {useState} from "react";
 import { StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
-import config from "./constants";
+import constants from "./constants";
 
 const PhotoButton = (props) => {
     const cameraRef = props.camera;
     return (
         <TouchableOpacity onPress={async() => {
             let photo = await cameraRef.takePictureAsync().catch(() => {
-                Alert.alert("Camera Error", "Something went wrong during photo capture. Please try again.", [config.okButton])
+                Alert.alert("Camera Error", "Something went wrong during photo capture. Please try again.", [constants.okButton])
                 return;
             });
             props.setPhoto(photo);

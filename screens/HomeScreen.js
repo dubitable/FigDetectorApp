@@ -58,10 +58,13 @@ const HomeScreen = props => {
         }
         const options = {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsMultipleSelection: false
+            allowsMultipleSelection: false,
+            allowsEditing: true
         }
         let result = await ImagePicker.launchImageLibraryAsync(options);
-        props.setPhoto(result)
+        if (! result.cancelled){
+            props.setPhoto(result)
+        }
     }
 
     const requireCamera = () => {

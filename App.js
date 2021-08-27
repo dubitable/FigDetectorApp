@@ -21,12 +21,19 @@ export default function App() {
   const photoHandler = async (photo) => {
     const cropData = {
       originX: 0,
-      originY: scale(300, photo),
+      originY: 1000,
       width: photo.width,
-      height: photo.height - scale(300, photo)
+      height: photo.height - 1500
     }
-    const croppedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{crop: cropData}]);
-    setPhoto(croppedPhoto);
+    try{
+      const croppedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{crop: cropData}]);
+      console.log(croppedPhoto);
+      setPhoto(croppedPhoto);
+    }
+    catch{
+      photo.shape = "square"
+      setPhoto(photo);
+    }
   }
 
   const cacheAssetsAsync = async () => {

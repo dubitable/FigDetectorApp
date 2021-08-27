@@ -5,10 +5,18 @@ import * as FileSystem from 'expo-file-system';
 
 import LoadingScreen from "./LoadingScreen";
 import constants from "../components/constants";
-import InfoCard from "../components/InfoCard";
+import Card from "../components/Card";
+import ResetButton from "../components/ResetButton";
 
 const api = "https://detectors.herokuapp.com/figdetectorjs";
 const local = "http://127.0.0.1:5000/figdetectorjs";
+
+const Fig = props => {
+    let transform = [{ rotate: "-20deg" }];
+    return (
+        <Image style={{...styles.image, transform: transform}} source={require("../assets/images/fig.png")} width={40} height={40}/>
+    )
+}
 
 const PredictionScreen = (props) => {
     const [response, setResponse] = useState(null);
@@ -47,19 +55,27 @@ const PredictionScreen = (props) => {
     const isFig = Number(response.confidences["fig"]) + Number(response.confidences["desert fig"]);
     const figConfidences = [isFig, 1 - isFig];
 
-    
+    let confidence = isFig > 1 - isFig ? isFig : 1 - isFig;
+    confidence = (confidence * 100).toString().slice(0, 4)
+
     const width = Dimensions.get("window").width;
-    const height = (width * props.photo.height) / props.photo.width
+    const height =  props.photo.shape === "square" ? width :  (width * props.photo.height) / props.photo.width
+    
 
     return (
         <View style={styles.screen}>
             <ScrollView contentContainerStyle = {styles.scroll}>
-                <View style = {styles.imageContainer}>
-                    <Image style = {styles.image} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
+                <View style={styles.predictionContainer}>
+                    <View style={styles.figContainer}>
+                        <Fig/><Fig/><Fig/><Fig/><Fig/><Fig/><Fig/>
+                    </View>
+                    <Card cardStyle = {styles.card1}> {message} </Card>
+                    <View style = {styles.imageContainer}>
+                        <Image style = {styles.image} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
+                    </View>
+                    <Card cardStyle = {styles.card2}> {confidence}% CONFIDENCE </Card>
+                    <ResetButton style={styles.button} onPress={props.reset}> HOME </ResetButton>
                 </View>
-                <Card> </Card>
-                
-                <Button title="Home" onPress={props.reset}/>
             </ScrollView>
             
         </View>
@@ -76,9 +92,27 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    chart: {
-        marginVertical: 8,
-        borderRadius: 16
+    predictionContainer: {
+        marginTop: 50,
+        width: "100%",
+        alignItems: "center"
+    },
+    card1: {
+        width: "100%",
+    },
+    card2: {
+        width: "100%",
+    },
+    button: {
+        marginVertical: 20
+    },
+    figContainer:{
+        flex: 1,
+        flexDirection: "row"
+    },
+    image: {
+        marginHorizontal: 10,
+        marginBottom: 10
     }
 })
 
