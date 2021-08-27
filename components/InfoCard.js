@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
-import config from "./config";
 
 const InfoCard = props => {
     let factText;

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions} from 'react-native';
 
-import {BarChart} from "react-native-chart-kit";
 import * as FileSystem from 'expo-file-system';
 
 import LoadingScreen from "./LoadingScreen";
-import config from "./config";
+import constants from "../components/constants";
+import InfoCard from "../components/InfoCard";
 
 const api = "https://detectors.herokuapp.com/figdetectorjs";
 const local = "http://127.0.0.1:5000/figdetectorjs";
@@ -50,7 +50,6 @@ const PredictionScreen = (props) => {
     
     const width = Dimensions.get("window").width;
     const height = (width * props.photo.height) / props.photo.width
-    console.log(props.photo);
 
     return (
         <View style={styles.screen}>
@@ -58,7 +57,8 @@ const PredictionScreen = (props) => {
                 <View style = {styles.imageContainer}>
                     <Image style = {styles.image} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
                 </View>
-                <Text> {message} </Text>
+                <Card> </Card>
+                
                 <Button title="Home" onPress={props.reset}/>
             </ScrollView>
             
@@ -69,7 +69,7 @@ const PredictionScreen = (props) => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: config.backgroundColor
+        backgroundColor: constants.backgroundColor
     },
     scroll: {
         flexDirection: "column",

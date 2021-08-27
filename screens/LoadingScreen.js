@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, Linking, Alert, Image } from 'react-native';
 
-import factObjects from "./facts";
-import config from "./config";
-import InfoCard from "./InfoCard";
-import SpinningFig from "./SpinningFig";
+import factObjects from "../components/facts";
+import constants from "../components/constants";
+import InfoCard from "../components/InfoCard";
+import SpinningFig from "../components/SpinningFig";
+
+const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
 const sample = (array) => {
     const random = Math.floor(Math.random() * array.length);
@@ -22,21 +26,33 @@ const shuffle = (array) => {
     return array;
 }
 
+const delayHandler = async (start, delay) => {
+    const time = delay - (Date.now() - start);
+    if (time > 0){
+        await sleep(time);
+    }
+}
+
 const LoadingScreen = props => {
     useEffect(() => {
+        const start = Date.now();
         props.startAsync()
         .then((response) => {
             //console.log(JSON.stringify(response));
             if (response.status == 200){
                 response.json()
                 .then(prediction => {
-                    props.onFinish(prediction);
+                    delayHandler(start, 4500)
+                    .then(() => {
+                        props.onFinish(prediction);
+                    })
+                   
                 })
             }
             else{
                 Alert.alert("Request Failed", 
                         "Something went wrong during processing. Please try again.",
-                        [config.okButton])
+                        [constants.okButton])
                 props.onError();
             }
             
@@ -45,7 +61,7 @@ const LoadingScreen = props => {
             console.log(error);
             Alert.alert("Request Failed", 
                         "This is most likely a network error. Either you do not have access to Internet, or have not allowed the app to use it.",
-                        [config.okButton, config.settingsButton])
+                        [constants.okButton, constants.settingsButton])
             props.onError();
         });
     }, [])
@@ -75,7 +91,7 @@ const styles = StyleSheet.create({
     screen: {
         width: "100%",
         height: "100%",
-        backgroundColor: config.backgroundColor,
+        backgroundColor: constants.backgroundColor,
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"

@@ -5,10 +5,10 @@ import { Camera } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker';
 
-import ImgPicker from "./ImagePicker";
-import SwitchCam from "./SwitchCam";
-import PhotoButton from "./PhotoButton";
-import config from "./config";
+import ImgPicker from "../components/ImagePicker";
+import SwitchCam from "../components/SwitchCam";
+import PhotoButton from "../components/PhotoButton";
+import constants from "../components/constants";
 
 const front = Camera.Constants.Type.front;
 const back = Camera.Constants.Type.back;
@@ -53,7 +53,7 @@ const HomeScreen = props => {
         if (status !== "granted"){
             Alert.alert("Permissions Denied", 
                         "Please allow access to your Photo Library if you want to use this feature.",
-                        [config.okButton, config.settingsButton])
+                        [constants.okButton, constants.settingsButton])
             return;
         }
         const options = {
@@ -67,7 +67,7 @@ const HomeScreen = props => {
     const requireCamera = () => {
         Alert.alert("Permissions Denied", 
                         "Please allow access to your Camera if you want to use this feature.",
-                        [config.okButton,config.settingsButton])
+                        [constants.okButton,constants.settingsButton])
     }
 
     if (hasPermission === null) {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         borderColor: "white",
-        borderTopWidth: 5,
+        //borderTopWidth: 5,
         paddingTop: 20
     },
     button: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         borderColor: "white",
         paddingBottom: 20,
-        borderBottomWidth: 5
+        //borderBottomWidth: 5
     },
 
     switchIcon: {
@@ -169,7 +169,7 @@ const noCamStyles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: config.backgroundColor,
+        backgroundColor: constants.backgroundColor,
     },
     icons: {
         flexDirection: "row",

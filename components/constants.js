@@ -1,6 +1,6 @@
-const config = {
+const constants = {
     backgroundColor: "#9FA8DA",
-    chartConfig: {
+    chartconstants: {
         backgroundColor: "#e26a00",
         backgroundGradientFrom: "#fb8c00",
         backgroundGradientTo: "#ffa726",
@@ -18,4 +18,4 @@ const config = {
     }
 }
 
-export default config;
+export default constants;

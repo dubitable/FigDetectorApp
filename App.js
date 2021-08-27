@@ -6,8 +6,8 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
-import HomeScreen from "./components/HomeScreen";
-import PredictionScreen from './components/PredictionScreen';
+import HomeScreen from "./screens/HomeScreen";
+import PredictionScreen from './screens/PredictionScreen';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -21,9 +21,9 @@ export default function App() {
   const photoHandler = async (photo) => {
     const cropData = {
       originX: 0,
-      originY: scale(120, photo),
+      originY: scale(300, photo),
       width: photo.width,
-      height: photo.height - scale(150, photo)
+      height: photo.height - scale(300, photo)
     }
     const croppedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{crop: cropData}]);
     setPhoto(croppedPhoto);
