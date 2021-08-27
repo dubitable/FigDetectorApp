@@ -10,14 +10,14 @@ const Fig = props => {
 }
 
 const ResetButton = props => {
-
+    let figs = [...Array(3).keys()].map((item) => <Fig key={item}/>)
     return (
         <View style={{...props.style, ...styles.container}}>
-            <Fig/><Fig/><Fig/>
+            {figs}
             <TouchableOpacity onPress={props.onPress}>
                 <MaterialCommunityIcons style={{marginHorizontal: 10}} name="backup-restore" size={75} color="white" />
             </TouchableOpacity>
-            <Fig/><Fig/><Fig/>
+            {figs}
         </View>
         
     )

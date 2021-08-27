@@ -61,17 +61,18 @@ const PredictionScreen = (props) => {
     const width = Dimensions.get("window").width;
     const height =  props.photo.shape === "square" ? width :  (width * props.photo.height) / props.photo.width
     
+    let figs = [...Array(7).keys()].map((item) => <Fig key={item}/>);
 
     return (
         <View style={styles.screen}>
             <ScrollView contentContainerStyle = {styles.scroll}>
                 <View style={styles.predictionContainer}>
                     <View style={styles.figContainer}>
-                        <Fig/><Fig/><Fig/><Fig/><Fig/><Fig/><Fig/>
+                        {figs}
                     </View>
                     <Card cardStyle = {styles.card1}> {message} </Card>
                     <View style = {styles.imageContainer}>
-                        <Image style = {styles.image} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
+                        <Image style = {styles.resultImage} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
                     </View>
                     <Card cardStyle = {styles.card2}> {confidence}% CONFIDENCE </Card>
                     <ResetButton style={styles.button} onPress={props.reset}> HOME </ResetButton>
@@ -113,6 +114,9 @@ const styles = StyleSheet.create({
     image: {
         marginHorizontal: 10,
         marginBottom: 10
+    },
+    resultImage: {
+
     }
 })
 

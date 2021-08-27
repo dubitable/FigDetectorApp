@@ -25,13 +25,11 @@ export default function App() {
       width: photo.width,
       height: photo.height - 1500
     }
-    try{
+    if (photo.shape !== "square"){
       const croppedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{crop: cropData}]);
-      console.log(croppedPhoto);
       setPhoto(croppedPhoto);
-    }
-    catch{
-      photo.shape = "square"
+    }  
+    else{
       setPhoto(photo);
     }
   }

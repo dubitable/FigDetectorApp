@@ -63,7 +63,8 @@ const HomeScreen = props => {
         }
         let result = await ImagePicker.launchImageLibraryAsync(options);
         if (! result.cancelled){
-            props.setPhoto(result)
+            result.shape = "square";
+            props.setPhoto(result);
         }
     }
 
