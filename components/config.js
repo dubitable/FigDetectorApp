@@ -15,8 +15,7 @@ const config = {
     settingsButton: {
         text: "Settings",
         onPress: () => Linking.openSettings()
-    },
-    primary: '#f7287b'
+    }
 }
 
 export default config;

@@ -33,7 +33,6 @@ const PredictionScreen = (props) => {
             <LoadingScreen startAsync = {predict} onFinish = {setResponse} onError={props.reset}/>
         )
     }
-    const src = {uri: props.photo.uri};
 
     let message = "NOT FIG";
 
@@ -44,50 +43,22 @@ const PredictionScreen = (props) => {
     const labels = Object.keys(response.confidences);
     const confidences = Object.values(response.confidences).map(value => Number(value));
 
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                data: confidences
-            }
-        ]
-    }
-
     const figLabels = ["Fig", "Not Fig"];
     const isFig = Number(response.confidences["fig"]) + Number(response.confidences["desert fig"]);
     const figConfidences = [isFig, 1 - isFig];
 
-    const figData = {
-        labels: figLabels,
-        datasets: [
-            {
-                data: figConfidences
-            }
-        ]
-    }
-
-    let figChart = (
-        <BarChart
-            data={figData}
-            width={Dimensions.get("window").width}
-            height={220}
-            chartConfig={config.chartConfig}
-            style={styles.chart}
-            withHorizontalLabels={true}
-            fromZero={true}
-        />
-    )
-
+    
+    const width = Dimensions.get("window").width;
+    const height = (width * props.photo.height) / props.photo.width
     console.log(props.photo);
 
     return (
         <View style={styles.screen}>
             <ScrollView contentContainerStyle = {styles.scroll}>
                 <View style = {styles.imageContainer}>
-                    <Image style = {styles.image} source = {src}/> 
+                    <Image style = {styles.image} source = {{uri: props.photo.uri}} resizeMode="contain" width={width} height = {height}/>
                 </View>
                 <Text> {message} </Text>
-                {figChart}
                 <Button title="Home" onPress={props.reset}/>
             </ScrollView>
             
@@ -97,23 +68,13 @@ const PredictionScreen = (props) => {
 
 const styles = StyleSheet.create({
     screen: {
-        width: "100%",
-        height: "100%",
+        flex: 1,
         backgroundColor: config.backgroundColor
     },
     scroll: {
         flexDirection: "column",
-        width: "100%",
-        height: "100%",
         alignItems: "center",
-    },
-    imageContainer: {
-        height: 200,
-        width: "100%"
-    },
-    image: {
-        height: "100%",
-        width: "100%"
+        justifyContent: "center"
     },
     chart: {
         marginVertical: 8,

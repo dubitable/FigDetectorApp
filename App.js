@@ -1,9 +1,8 @@
 import { Camera } from 'expo-camera';
 import React, {useState} from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 
-import ImageEditor from "@react-native-community/image-editor";
-
+import * as ImageManipulator from 'expo-image-manipulator';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
@@ -12,25 +11,30 @@ import PredictionScreen from './components/PredictionScreen';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
-
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
+  const scale = (value, photo) => {
+    return (value * photo.height) / Dimensions.get("window").height;
+  }
+  
   const photoHandler = async (photo) => {
     const cropData = {
-      offset: {x: 0, y: 500},
-      size: {width: photo.width, height: 3000},
+      originX: 0,
+      originY: scale(120, photo),
+      width: photo.width,
+      height: photo.height - scale(150, photo)
     }
-    await ImageEditor.cropImage(photo.uri, cropData);
-    setPhoto(photo);
+    const croppedPhoto = await ImageManipulator.manipulateAsync(photo.uri, [{crop: cropData}]);
+    setPhoto(croppedPhoto);
   }
 
   const cacheAssetsAsync = async () => {
     Font.loadAsync({
-      'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-      'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
-    }).then(()=> {
-      setLoaded(true);
+        'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+      }).then(()=> {
+        setLoaded(true);
     })
   }
 
