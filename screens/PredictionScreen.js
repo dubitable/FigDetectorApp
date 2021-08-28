@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions, RecyclerViewBackedScrollView} from 'react-native';
 
 import * as FileSystem from 'expo-file-system';
 
@@ -36,12 +36,21 @@ const PredictionScreen = (props) => {
         return fetch(api, request);
     }
 
-    if (response === null){
-        return (
-            <LoadingScreen startAsync = {predict} onFinish = {setResponse} onError={props.reset}/>
-        )
+
+    let startAsync = predict;
+    let onFinish = setResponse;
+    let onError = props.reset;
+
+    if (props.testMode){
+        startAsync = () => new Promise((resolve, reject) => {});
     }
 
+    if (response === null){
+        return (
+            <LoadingScreen startAsync = {startAsync} onFinish = {onFinish} onError={onError}/>
+        )
+    }
+        
     let message = "NOT FIG";
 
     if (response.class_name == "fig"){

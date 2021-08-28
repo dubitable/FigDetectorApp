@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, Text, View, Linking, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Linking, Alert, Image, Platform } from 'react-native';
+import { AdMobBanner } from "expo-ads-admob";
 
 import factObjects from "../components/facts";
 import constants from "../components/constants";
@@ -78,9 +79,15 @@ const LoadingScreen = props => {
             setFacts(shuffle(factObjects));
         }
     }
+
+    let iosBannerId = "ca-app-pub-3623149433945070/7836145577";
+    let androidBannerId = "ca-app-pub-3623149433945070/5570264251";
     
+    let adId = Platform.OS == "ios" ? iosBannerId : androidBannerId;
+
     return (
         <View style = {styles.screen}> 
+            <AdMobBanner adUnitID={adId}/>
             <InfoCard style = {styles.card} fact = {facts[0]} onPress= {newFactHandler}/>
             <SpinningFig/>
         </View>

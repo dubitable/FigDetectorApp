@@ -14,6 +14,8 @@ export default function App() {
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
+  const [testMode, setTestMode] = useState(null);
+
   const scale = (value, photo) => {
     return (value * photo.height) / Dimensions.get("window").height;
   }
@@ -50,7 +52,7 @@ export default function App() {
   let screen = <HomeScreen type={type} setPhoto={photoHandler} setCamType={setType}/>;
 
   if (photo != null){
-    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}}/>
+    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}} testMode={true}/>
   }
 
   return (
