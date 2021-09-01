@@ -52,7 +52,7 @@ export default function App() {
   let screen = <HomeScreen type={type} setPhoto={photoHandler} setCamType={setType}/>;
 
   if (photo != null){
-    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}} testMode={true}/>
+    screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}}/>
   }
 
   return (

@@ -80,16 +80,29 @@ const LoadingScreen = props => {
         }
     }
 
-    let iosBannerId = "ca-app-pub-3623149433945070/7836145577";
-    let androidBannerId = "ca-app-pub-3623149433945070/5570264251";
-    
-    let adId = Platform.OS == "ios" ? iosBannerId : androidBannerId;
+    const adUnitIds = {
+        top: Platform.select({
+            ios: 'ca-app-pub-3623149433945070/7836145577',
+            android: 'ca-app-pub-3623149433945070/5570264251',
+        }),
+        bottom: Platform.select({
+            ios: 'ca-app-pub-3623149433945070/9820500454',
+            android: 'ca-app-pub-3623149433945070/9002242807',
+        }),
+        test: Platform.select({
+            ios: 'ca-app-pub-3940256099942544/2934735716',
+            android: 'ca-app-pub-3940256099942544/6300978111',
+        })
+    }
 
     return (
         <View style = {styles.screen}> 
-            <AdMobBanner adUnitID={adId}/>
-            <InfoCard style = {styles.card} fact = {facts[0]} onPress= {newFactHandler}/>
-            <SpinningFig/>
+            <AdMobBanner adUnitID={adUnitIds.test}/>
+            <View style = {styles.container}>
+                <InfoCard style = {styles.card} fact = {facts[0]} onPress= {newFactHandler}/>
+                <SpinningFig/>
+            </View>
+            <AdMobBanner adUnitID={adUnitIds.test}/>
         </View>
     )
 }
@@ -100,9 +113,13 @@ const styles = StyleSheet.create({
         height: "100%",
         backgroundColor: constants.backgroundColor,
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center"
     },
+    container: {
+        justifyContent: "center",
+        alignItems: "center"
+    }
 });
 
 export default LoadingScreen;

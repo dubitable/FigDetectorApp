@@ -24,15 +24,15 @@
       "bundleIdentifier": "com.notofigs.fig-detector",
       "buildNumber": "1.0.0",
       "config":{
-        "googleMobileAdsAppId": "ca-app-pub-3623149433945070~2667100443",
+        "googleMobileAdsAppId": "ca-app-pub-3623149433945070~2667100443"
       },
       "requireFullScreen": true
     },
     "android": {
-      "package": "com.notofigs.fig-detector",
+      "package": "com.notofigs.fig_detector",
       "versionCode": 1,
       "config":{
-        "googleMobileAdsAppId": "ca-app-pub-3623149433945070~7507814840",
+        "googleMobileAdsAppId": "ca-app-pub-3623149433945070~7507814840"
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/fig.png",
