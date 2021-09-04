@@ -3,23 +3,13 @@ import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 
 const InfoCard = props => {
-    let factText;
-    try{
-        if (props.fact.type === "text"){
-            factText = (
-                <Text style={styles.bodyText}> {props.fact.content} </Text>
-            )
-        }
-    }
-    catch{
-        console.log(props.fact);
-    }
-    
+    let number = Object.keys(props.fact)[0];
+    let content = Object.values(props.fact)[0];
     return (
        <View style = {{...props.style, ...styles.card}}>
                 <View style = {styles.container}>
-                    <Text style = {styles.headerText}> Fig Fact #{props.fact.number} </Text>
-                    {factText}
+                    <Text style = {styles.headerText}> Fig Fact #{number} </Text>
+                    <Text style={styles.bodyText}> {content} </Text>
                 </View>
         </View>
         

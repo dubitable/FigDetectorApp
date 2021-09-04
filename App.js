@@ -51,7 +51,6 @@ export default function App() {
   const factHandler = async () => {
     const facts = require("./components/facts.json");
     const todo = await AsyncStorage.getItem("@todo");
-    const done = await AsyncStorage.getItem("@todo");
 
     if (todo === null){
       await AsyncStorage.setItem("@todo", JSON.stringify(shuffle(facts)));
@@ -71,7 +70,7 @@ export default function App() {
       return await factHandler();
     }
     if (storedFacts.length > facts.length){
-      clearStorage();
+      await clearStorage();
       return await factHandler();
     }
   }
@@ -91,7 +90,6 @@ export default function App() {
     return <AppLoading/>
   }
   let screen = <HomeScreen type={type} setPhoto={photoHandler} setCamType={setType}/>;
-
   if (photo != null){
     screen = <PredictionScreen photo = {photo} reset = {() => {setPhoto(null)}}/>
   }

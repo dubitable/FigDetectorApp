@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, Linking, Alert, Image, Platform } from 'react-native';
 import { AdMobBanner } from "expo-ads-admob";
 
-import factObjects from "../components/facts";
 import constants from "../components/constants";
 import InfoCard from "../components/InfoCard";
 import SpinningFig from "../components/SpinningFig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -35,7 +35,7 @@ const delayHandler = async (start, delay) => {
 }
 
 const LoadingScreen = props => {
-    useEffect(() => {
+    const requestHandler = async () => {
         const start = Date.now();
         props.startAsync()
         .then((response) => {
@@ -65,9 +65,30 @@ const LoadingScreen = props => {
                         [constants.okButton, constants.settingsButton])
             props.onError();
         });
+    }
+
+    const [fact, setFact] = useState(null);
+
+    const factHandler = async () => {
+        let todo = JSON.parse(await AsyncStorage.getItem("@todo"));
+        let done = JSON.parse(await AsyncStorage.getItem("@done"));
+        if (todo.length === 0){
+            const facts = require("../components/facts.json");
+            await AsyncStorage.setItem("@todo", JSON.stringify(shuffle(facts)));
+            await AsyncStorage.setItem("@done", JSON.stringify([]));
+        }
+        done.push(todo[0]);
+        setFact(todo[0]);
+        todo.shift();
+        AsyncStorage.setItem("@todo", JSON.stringify(todo))
+        AsyncStorage.setItem("@done", JSON.stringify(done))
+    }
+
+    useEffect(() => {
+        factHandler();
+        requestHandler();
     }, [])
 
-    const [facts, setFacts] = useState(shuffle(factObjects));
 
     const adUnitIds = {
         top: Platform.select({
@@ -84,11 +105,15 @@ const LoadingScreen = props => {
         })
     }
 
+    let card = null;
+    if (fact !== null){
+        card = <InfoCard style = {styles.card} fact = {fact}/>
+    }
     return (
         <View style = {styles.screen}> 
             <AdMobBanner adUnitID={adUnitIds.test}/>
             <View style = {styles.container}>
-                <InfoCard style = {styles.card} fact = {facts[0]}/>
+                {card}
                 <SpinningFig/>
             </View>
             <AdMobBanner adUnitID={adUnitIds.test}/>
