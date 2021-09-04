@@ -7,8 +7,10 @@ import * as ImagePicker from 'expo-image-picker';
 
 import ImgPicker from "../components/ImagePicker";
 import SwitchCam from "../components/SwitchCam";
+import MoreButton from "../components/MoreButton";
 import PhotoButton from "../components/PhotoButton";
 import constants from "../components/constants";
+import ExtrasModal from "./ExtrasModal";
 
 const front = Camera.Constants.Type.front;
 const back = Camera.Constants.Type.back;
@@ -18,6 +20,7 @@ const HomeScreen = props => {
     const [cameraRef, setCameraRef] = useState(null)
     const [type, setType] = useState(props.type);
     const [lastTap, setLastTap] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -25,6 +28,10 @@ const HomeScreen = props => {
             setHasPermission(status === 'granted');
         })();
     }, []);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     const switchType = () => {
         if (type === back){
@@ -93,6 +100,7 @@ const HomeScreen = props => {
     
     return (
         <View style={styles.cameraContainer}>
+            <ExtrasModal isVisible={isModalVisible}/>
             <TouchableWithoutFeedback activeOpacity={0} onPress={doubleTapHandler}>
                 <Camera style={styles.camera} type={type} ref={ref => {
                     setCameraRef(ref);
@@ -100,13 +108,12 @@ const HomeScreen = props => {
                     <View style={styles.cameraView}>
                         <View style={styles.icons}>
                             <ImgPicker onPress = {imagePickerHandler} style={styles.libIcon} size={50}/>
+                            <MoreButton onPress={toggleModal} size={50}/>
                             <SwitchCam onPress = {switchType} style={styles.switchIcon} size={50}/>
                         </View>
                         <View style={styles.buttonContainer}>
                             <PhotoButton style = {styles.button} camera = {cameraRef} setPhoto={props.setPhoto}/>
                         </View>
-                        
-                        
                     </View>
                 </Camera>
             </TouchableWithoutFeedback>

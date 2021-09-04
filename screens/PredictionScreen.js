@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions, RecyclerViewBackedScrollView} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, ScrollView, Dimensions} from 'react-native';
 
 import * as FileSystem from 'expo-file-system';
 
