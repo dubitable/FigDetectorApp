@@ -69,17 +69,6 @@ const LoadingScreen = props => {
 
     const [facts, setFacts] = useState(shuffle(factObjects));
 
-    const newFactHandler = () => {
-        if (facts.length > 1){
-            const array = [...facts];
-            array.shift();
-            setFacts(array);
-        }
-        else{
-            setFacts(shuffle(factObjects));
-        }
-    }
-
     const adUnitIds = {
         top: Platform.select({
             ios: 'ca-app-pub-3623149433945070/7836145577',
@@ -99,7 +88,7 @@ const LoadingScreen = props => {
         <View style = {styles.screen}> 
             <AdMobBanner adUnitID={adUnitIds.test}/>
             <View style = {styles.container}>
-                <InfoCard style = {styles.card} fact = {facts[0]} onPress= {newFactHandler}/>
+                <InfoCard style = {styles.card} fact = {facts[0]}/>
                 <SpinningFig/>
             </View>
             <AdMobBanner adUnitID={adUnitIds.test}/>

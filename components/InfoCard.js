@@ -16,12 +16,12 @@ const InfoCard = props => {
     }
     
     return (
-       <TouchableOpacity onPress={props.onPress} style = {{...props.style, ...styles.card}}>
+       <View style = {{...props.style, ...styles.card}}>
                 <View style = {styles.container}>
                     <Text style = {styles.headerText}> Fig Fact #{props.fact.number} </Text>
                     {factText}
                 </View>
-        </TouchableOpacity>
+        </View>
         
     )
 }
