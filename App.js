@@ -47,6 +47,7 @@ export default function App() {
     await AsyncStorage.setItem("@allCollected", "false");
     await AsyncStorage.removeItem("@todo");
     await AsyncStorage.removeItem("@done");
+    await AsyncStorage.removeItem("@SETTINGS");
   }
 
   const factHandler = async () => {
@@ -82,9 +83,21 @@ export default function App() {
     }
   }
 
+  const SETTINGSHandler = async() => {
+    let SETTINGS = JSON.parse(await AsyncStorage.getItem("@SETTINGS"));
+    if (! SETTINGS){
+      SETTINGS = {
+        optimizedPredictions: false,
+        ads: true
+      }
+      await AsyncStorage.setItem("@SETTINGS", JSON.stringify(SETTINGS))
+    }
+  }
+
   const cacheAssetsAsync = async () => {
-    //await clearStorage();
+    await clearStorage();
     await factHandler();
+    await SETTINGSHandler();
     await Font.loadAsync({
         'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
         'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')

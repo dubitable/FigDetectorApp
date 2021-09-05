@@ -35,7 +35,7 @@ const delayHandler = async (start, delay) => {
 }
 
 const LoadingScreen = props => {
-    const requestHandler = async () => {
+    const requestHandler = async (SETTINGS) => {
         const start = Date.now();
         props.startAsync()
         .then((response) => {
@@ -43,7 +43,11 @@ const LoadingScreen = props => {
             if (response.status == 200){
                 response.json()
                 .then(prediction => {
-                    delayHandler(start, 4500)
+                    let delay = 4500;
+                    if (SETTINGS.optimizedPredictions){
+                        delay = 0;
+                    }
+                    delayHandler(start, delay)
                     .then(() => {
                         console.log(Date.now() - start)
                         props.onFinish(prediction);
@@ -80,8 +84,6 @@ const LoadingScreen = props => {
             await AsyncStorage.setItem("@allCollected", "true");
             todo = JSON.parse(await AsyncStorage.getItem("@todo"));
             done = JSON.parse(await AsyncStorage.getItem("@done"));
-            console.log(todo.length);
-            console.log(done.length);
         }
         done.push(todo[0]);
         setFact(todo[0]);
@@ -90,26 +92,39 @@ const LoadingScreen = props => {
         AsyncStorage.setItem("@done", JSON.stringify(done))
     }
 
+    const [topAd, setTopAd] = useState(<View/>);
+    const [bottomAd, setBottomAd] = useState(<View/>);
+
+    const adHandler = async (SETTINGS) => {
+        if (! SETTINGS["ads"]){
+            return;
+        }
+        const adUnitIds = {
+            top: Platform.select({
+                ios: 'ca-app-pub-3623149433945070/7836145577',
+                android: 'ca-app-pub-3623149433945070/5570264251',
+            }),
+            bottom: Platform.select({
+                ios: 'ca-app-pub-3623149433945070/9820500454',
+                android: 'ca-app-pub-3623149433945070/9002242807',
+            })
+        }
+        setTopAd(<AdMobBanner adUnitID={adUnitIds.top}/>)
+        setBottomAd(<AdMobBanner adUnitID={adUnitIds.bottom}/>)
+    }
+
     useEffect(() => {
-        factHandler();
-        requestHandler();
+        const effect = async () => {
+            let settings = JSON.parse(await AsyncStorage.getItem("@SETTINGS"));
+            factHandler();
+            adHandler(settings);
+            requestHandler(settings);
+        }
+        effect();
     }, [])
 
 
-    const adUnitIds = {
-        top: Platform.select({
-            ios: 'ca-app-pub-3623149433945070/7836145577',
-            android: 'ca-app-pub-3623149433945070/5570264251',
-        }),
-        bottom: Platform.select({
-            ios: 'ca-app-pub-3623149433945070/9820500454',
-            android: 'ca-app-pub-3623149433945070/9002242807',
-        }),
-        test: Platform.select({
-            ios: 'ca-app-pub-3940256099942544/2934735716',
-            android: 'ca-app-pub-3940256099942544/6300978111',
-        })
-    }
+    
 
     let card = null;
     if (fact){
@@ -117,12 +132,12 @@ const LoadingScreen = props => {
     }
     return (
         <View style = {styles.screen}> 
-            <AdMobBanner adUnitID={adUnitIds.test}/>
+            {topAd}
             <View style = {styles.container}>
                 {card}
                 <SpinningFig/>
             </View>
-            <AdMobBanner adUnitID={adUnitIds.test}/>
+            {bottomAd}
         </View>
     )
 }
