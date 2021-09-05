@@ -25,7 +25,6 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [facts, setFacts] = useState(null);
 
   const photoHandler = async (photo) => {
     const cropData = {
@@ -61,14 +60,15 @@ export default function App() {
     const storedFacts = JSON.parse(todo);
 
     if (storedFacts.length < facts.length){
-      let storedIds = storedFacts.map(elem => Object.keys(elem)[0]);
-      let ids = facts.map(elem => Object.keys(elem)[0]);
+      let storedIds = storedFacts.map(elem => elem.key);
+      let ids = facts.map(elem => elem.key);
       let newIds = ids.filter(elem => !storedIds.includes(elem));
-      let newFacts = facts.filter(elem => newIds.includes(Object.keys(elem)[0]));
+      let newFacts = facts.filter(elem => newIds.includes(elem.key));
       let toStoreFacts = storedFacts.concat(shuffle(newFacts));
       await AsyncStorage.setItem("@todo", JSON.stringify(toStoreFacts));
       return await factHandler();
     }
+
     if (storedFacts.length > facts.length){
       await clearStorage();
       return await factHandler();

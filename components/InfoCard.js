@@ -3,8 +3,8 @@ import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 
 const InfoCard = props => {
-    let number = Object.keys(props.fact)[0];
-    let content = Object.values(props.fact)[0];
+    let number = props.fact["key"];
+    let content = props.fact["fact"];
     return (
        <View style = {{...props.style, ...styles.card}}>
                 <View style = {styles.container}>

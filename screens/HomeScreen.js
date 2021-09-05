@@ -100,7 +100,7 @@ const HomeScreen = props => {
     
     return (
         <View style={styles.cameraContainer}>
-            <ExtrasModal isVisible={isModalVisible}/>
+            <ExtrasModal isVisible={isModalVisible} toggleModal={toggleModal}/>
             <TouchableWithoutFeedback activeOpacity={0} onPress={doubleTapHandler}>
                 <Camera style={styles.camera} type={type} ref={ref => {
                     setCameraRef(ref);
