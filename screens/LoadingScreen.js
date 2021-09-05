@@ -43,8 +43,9 @@ const LoadingScreen = props => {
             if (response.status == 200){
                 response.json()
                 .then(prediction => {
-                    delayHandler(start, 4500)
+                    delayHandler(start, 0)
                     .then(() => {
+                        console.log(Date.now() - start)
                         props.onFinish(prediction);
                     })
                    
@@ -76,6 +77,11 @@ const LoadingScreen = props => {
             const facts = require("../components/facts.json");
             await AsyncStorage.setItem("@todo", JSON.stringify(shuffle(facts)));
             await AsyncStorage.setItem("@done", JSON.stringify([]));
+            await AsyncStorage.setItem("@allCollected", "true");
+            todo = JSON.parse(await AsyncStorage.getItem("@todo"));
+            done = JSON.parse(await AsyncStorage.getItem("@done"));
+            console.log(todo.length);
+            console.log(done.length);
         }
         done.push(todo[0]);
         setFact(todo[0]);
@@ -106,7 +112,7 @@ const LoadingScreen = props => {
     }
 
     let card = null;
-    if (fact !== null){
+    if (fact){
         card = <InfoCard style = {styles.card} fact = {fact}/>
     }
     return (

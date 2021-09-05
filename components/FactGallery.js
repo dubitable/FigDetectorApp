@@ -9,7 +9,12 @@ const FigGallery = props => {
     const load = async () => {
         let todo = JSON.parse(await AsyncStorage.getItem("@todo"));
         let data = JSON.parse(await AsyncStorage.getItem("@done"));
-        props.setData({todo: todo.length, done: data.length})
+        let allCollected = JSON.parse(await AsyncStorage.getItem("@allCollected"));
+        let object = {todo: todo.length, done: data.length, allCollected: allCollected};
+        props.setData(object);
+        if (allCollected){
+            data = todo.concat(data);
+        }
         data = data.map(elem => {
             return {key: elem["key"], fact: elem["fact"]};
         });

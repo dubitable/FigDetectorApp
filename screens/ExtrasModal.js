@@ -44,11 +44,18 @@ const itemStyles = StyleSheet.create({
 
 const ExtrasModal = props => {
     const [figMode, setFigMode] = useState(false);
-    const [data, setData] = useState({todo: 0, done: 0});
-
+    const [data, setData] = useState({todo: 0, done: 0, allCollected: false});
     let figs = [...Array(7).keys()].map((item) => <Fig key={item}/>);
-    let screen;
+    
 
+    let done = data.done;
+    let total = data.todo+data.done;
+    if (data.allCollected){
+        done = total;
+    }
+
+    let screen;
+    
     if (! figMode){
         screen = (
             <View style={styles.container}>
@@ -92,7 +99,7 @@ const ExtrasModal = props => {
                     <Button inline style={styles.buttonText} onPress={props.toggleModal}> Dismiss </Button>
                 </View>
                 <View style={styles.header}>
-                        <Text style={styles.titleText}> FACT GALLERY {data.done}/{data.todo+data.done} </Text>
+                        <Text style={styles.titleText}> FACT GALLERY {done}/{total} </Text>
                         <View style={styles.figs}>
                             {figs}
                         </View>

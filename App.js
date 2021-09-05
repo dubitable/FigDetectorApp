@@ -43,6 +43,7 @@ export default function App() {
   }
 
   const clearStorage = async () => {
+    await AsyncStorage.setItem("@allCollected", "false");
     await AsyncStorage.removeItem("@todo");
     await AsyncStorage.removeItem("@done");
   }
@@ -50,28 +51,37 @@ export default function App() {
   const factHandler = async () => {
     const facts = require("./components/facts.json");
     const todo = await AsyncStorage.getItem("@todo");
+    const done = await AsyncStorage.getItem("@done");
 
     if (todo === null){
+      await clearStorage();
       await AsyncStorage.setItem("@todo", JSON.stringify(shuffle(facts)));
       await AsyncStorage.setItem("@done", JSON.stringify([]));
       return await factHandler();
     }
 
-    const storedFacts = JSON.parse(todo);
+    const storedTodo = JSON.parse(todo);
+    const storedDone = JSON.parse(done);
+    const storedFacts = storedTodo.concat(storedDone);
+
+    console.log(storedTodo.length)
+    console.log(storedDone.length)
+    console.log(facts.length)
 
     if (storedFacts.length < facts.length){
-      let storedIds = storedFacts.map(elem => elem.key);
-      let ids = facts.map(elem => elem.key);
-      let newIds = ids.filter(elem => !storedIds.includes(elem));
-      let newFacts = facts.filter(elem => newIds.includes(elem.key));
-      let toStoreFacts = storedFacts.concat(shuffle(newFacts));
+      const newIds = facts.map(elem => elem.fact).filter(elem => !storedFacts.map(elem => elem.fact).includes(elem));
+      const newFacts = facts.filter(elem => newIds.includes(elem.fact));
+      const toStoreFacts = storedTodo.concat(shuffle(newFacts));
       await AsyncStorage.setItem("@todo", JSON.stringify(toStoreFacts));
+      await AsyncStorage.setItem("@allCollected", "false");
       return await factHandler();
     }
-
     if (storedFacts.length > facts.length){
-      await clearStorage();
-      return await factHandler();
+      const newIds = facts.map(elem => elem.fact);
+      const newTodo = storedTodo.filter(elem => newIds.includes(elem.fact));
+      const newDone = storedDone.filter(elem => newIds.includes(elem.fact));
+      await AsyncStorage.setItem("@todo", JSON.stringify(newTodo));
+      await AsyncStorage.setItem("@done", JSON.stringify(newDone));
     }
   }
 
