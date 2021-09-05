@@ -27,6 +27,7 @@ export default function App() {
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   const photoHandler = async (photo) => {
+    if (! photo) return;
     const cropData = {
       originX: 0,
       originY: 1000,
@@ -63,10 +64,6 @@ export default function App() {
     const storedTodo = JSON.parse(todo);
     const storedDone = JSON.parse(done);
     const storedFacts = storedTodo.concat(storedDone);
-
-    console.log(storedTodo.length)
-    console.log(storedDone.length)
-    console.log(facts.length)
 
     if (storedFacts.length < facts.length){
       const newIds = facts.map(elem => elem.fact).filter(elem => !storedFacts.map(elem => elem.fact).includes(elem));

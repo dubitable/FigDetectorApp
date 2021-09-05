@@ -43,7 +43,7 @@ const LoadingScreen = props => {
             if (response.status == 200){
                 response.json()
                 .then(prediction => {
-                    delayHandler(start, 0)
+                    delayHandler(start, 4500)
                     .then(() => {
                         console.log(Date.now() - start)
                         props.onFinish(prediction);
